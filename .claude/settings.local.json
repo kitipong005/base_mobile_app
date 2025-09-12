@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(fvm flutter packages pub run build_runner:*)",
+      "Bash(flutter packages pub run:*)",
+      "Bash(flutter pub:*)",
+      "Bash(flutter run:*)",
+      "Bash(flutter packages:*)",
+      "Bash(dart run:*)",
+      "Bash(flutter clean:*)",
+      "Bash(flutter build:*)",
+      "Bash(find:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(cat:*)",
+      "Bash(flutter:*)",
+      "Bash(timeout 20 flutter run --hot)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(pod install:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(r)"
+    ],
+    "deny": []
+  }
+}

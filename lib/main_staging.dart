@@ -1,0 +1,7 @@
+import 'core/config/app_config.dart';
+import 'main_common.dart';
+
+void main() {
+  AppConfig.flavor = Flavor.staging;
+  mainCommon();
+}
