@@ -3,8 +3,9 @@
 ## Getting Started
 
 ### Prerequisites
-- Flutter SDK (latest stable version)
-- Dart SDK
+- Flutter SDK 3.35.0+ (latest stable version)
+- Dart SDK 3.9.0+
+- FVM (Flutter Version Management) - recommended
 - Android Studio / VS Code with Flutter extensions
 - iOS development setup (for iOS builds)
 
@@ -14,6 +15,10 @@
 git clone <repository-url>
 cd base_mobile_app
 
+# Setup Flutter version (if using FVM)
+fvm use 3.35.3
+fvm flutter --version
+
 # Install dependencies
 flutter pub get
 
@@ -21,6 +26,8 @@ flutter pub get
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
 # Run the app
+flutter run -t lib/main_dev.dart
+# or
 flutter run --flavor dev
 ```
 
@@ -355,13 +362,71 @@ return baseResponse.data!;
 
 ### Common Issues & Solutions
 
-**1. Dependency Injection Errors**
+**1. Flutter Version Issues**
+```
+Error: The current Dart SDK version is X but this app requires Y
+```
+**Solution**: 
+```bash
+# Check versions
+flutter --version
+fvm flutter --version
+
+# Update pubspec.yaml environment constraints
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+  flutter: ">=3.35.0"
+
+# Use FVM for version consistency
+fvm use stable
+```
+
+**2. Dependency Compatibility**
+```
+Error: version solving failed / incompatible dependencies
+```
+**Solution**:
+```bash
+# Check what's outdated
+flutter pub outdated
+
+# Update incrementally, not all at once
+flutter pub upgrade flutter_bloc
+flutter pub get
+
+# For major version conflicts, update one by one
+flutter pub add flutter_bloc:^9.1.1
+```
+
+**3. Deprecated API Warnings**
+```
+Warning: 'activeColor' is deprecated and shouldn't be used
+```
+**Solution**: Follow migration guides:
+- Switch: `activeColor` → `activeThumbColor`
+- Radio: Use `RadioGroup` wrapper
+- DropdownFormField: `value` → `initialValue`
+
+**4. Code Generation Errors**
+```
+Error: build_runner build failed
+```
+**Solution**:
+```bash
+# Clean and regenerate
+flutter clean
+flutter pub get
+flutter packages pub run build_runner clean
+flutter packages pub run build_runner build --delete-conflicting-outputs
+```
+
+**5. Dependency Injection Errors**
 ```
 Error: GetIt: Object/factory with type X is not registered
 ```
-**Solution**: Run `flutter packages pub run build_runner build --delete-conflicting-outputs`
+**Solution**: Run code generation after adding new `@injectable` classes
 
-**2. Model Parsing Errors**
+**6. Model Parsing Errors**
 ```
 Error: type 'Null' is not a subtype of type 'String'
 ```
@@ -374,7 +439,7 @@ name: json['name'],
 name: json['name'] as String? ?? '',
 ```
 
-**3. BLoC Not Emitting States**
+**7. BLoC Not Emitting States**
 ```dart
 // Bad - missing await
 repository.getData();
@@ -385,11 +450,10 @@ final data = await repository.getData();
 emit(DataLoaded(data));
 ```
 
-**4. API Errors**
-- Check `ApiEndpoints` constants
-- Verify `AppConfig.baseUrl` for current environment
-- Check network connectivity
-- Verify authentication token validity
+**8. Flavor/Environment Issues**
+- Check `AppConfig.flavor` is set correctly in main_*.dart files
+- Verify `AppConfig.baseUrl` returns correct URL for environment
+- Use `flutter run -t lib/main_dev.dart` instead of `--flavor`
 
 ### Debug Tools
 ```dart
@@ -405,19 +469,62 @@ print('API Request: ${AppConfig.baseUrl}${ApiEndpoints.yourEndpoint}');
 print('Response: ${response.data}');
 ```
 
+## Flutter Version Management
+
+### Using FVM (Recommended)
+```bash
+# Install FVM
+dart pub global activate fvm
+
+# Use specific Flutter version for this project
+fvm use 3.35.3
+
+# Check current version
+fvm flutter --version
+
+# List available versions
+fvm releases
+
+# Use stable channel
+fvm use stable
+```
+
+### Direct Flutter Commands
+```bash
+# Check current version
+flutter --version
+
+# Upgrade to latest stable
+flutter upgrade
+
+# Switch channel
+flutter channel stable
+flutter upgrade
+```
+
+### Version Consistency in Team
+Create `.fvm/fvm_config.json` (already included):
+```json
+{
+  "flutterSdkVersion": "3.35.3"
+}
+```
+
 ## Environment Management
 
-### Flavors
+### Flavors (Manual Setup)
 ```bash
 # Development
-flutter run --flavor dev
+flutter run -t lib/main_dev.dart
 
 # Staging  
-flutter run --flavor staging
+flutter run -t lib/main_staging.dart
 
 # Production
-flutter run --flavor prod
+flutter run -t lib/main_prod.dart
 ```
+
+**Note**: This project uses manual flavor setup, not flutter_flavorizr
 
 ### Configuration
 Environment-specific settings in `app_config.dart`:
@@ -487,11 +594,14 @@ factory YourModel.fromJson(Map<String, dynamic> json) {
 ## Deployment
 
 ### Pre-deployment Checklist
+- [ ] Flutter version consistent: `fvm flutter --version`
+- [ ] Dependencies up to date: `flutter pub outdated`
+- [ ] No deprecated warnings: `flutter analyze`
 - [ ] All tests pass: `flutter test`
-- [ ] No analysis issues: `flutter analyze`
 - [ ] Code generation up to date: `flutter packages pub run build_runner build`
 - [ ] Proper environment configuration
 - [ ] Version number updated in `pubspec.yaml`
+- [ ] Test on different devices/OS versions
 
 ### Build Commands
 ```bash

@@ -259,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeColor: Theme.of(context).colorScheme.primary,
+        activeThumbColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }
@@ -284,14 +284,14 @@ class _SettingsPageState extends State<SettingsPage> {
       trailing: DropdownButton<ThemeMode>(
         value: currentTheme,
         underline: const SizedBox.shrink(),
-        items: [
+        items: const [
           DropdownMenuItem(
             value: ThemeMode.light,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.light_mode, size: 16),
-                const SizedBox(width: 8),
+                Icon(Icons.light_mode, size: 16),
+                SizedBox(width: 8),
                 Text('Light', style: AppTypography.bodySmall),
               ],
             ),
@@ -301,8 +301,8 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.dark_mode, size: 16),
-                const SizedBox(width: 8),
+                Icon(Icons.dark_mode, size: 16),
+                SizedBox(width: 8),
                 Text('Dark', style: AppTypography.bodySmall),
               ],
             ),
@@ -312,8 +312,8 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.settings, size: 16),
-                const SizedBox(width: 8),
+                Icon(Icons.settings, size: 16),
+                SizedBox(width: 8),
                 Text('System', style: AppTypography.bodySmall),
               ],
             ),
@@ -348,34 +348,39 @@ class _SettingsPageState extends State<SettingsPage> {
           style: AppTypography.h6.themed(context),
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              title: const Text(
-                'English',
-                style: AppTypography.bodyMedium,
+        content: RadioGroup<String>(
+          onChanged: (value) {
+            if (value != null) {
+              Navigator.pop(context, value);
+            }
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text(
+                  'English',
+                  style: AppTypography.bodyMedium,
+                ),
+                leading: Radio<String>(
+                  value: 'English',
+                  activeColor: Theme.of(context).colorScheme.primary,
+                ),
+                onTap: () => Navigator.pop(context, 'English'),
               ),
-              value: 'English',
-              groupValue: _selectedLanguage,
-              activeColor: Theme.of(context).colorScheme.primary,
-              onChanged: (value) {
-                Navigator.pop(context, value);
-              },
-            ),
-            RadioListTile<String>(
-              title: const Text(
-                'Thai',
-                style: AppTypography.bodyMedium,
+              ListTile(
+                title: const Text(
+                  'Thai',
+                  style: AppTypography.bodyMedium,
+                ),
+                leading: Radio<String>(
+                  value: 'Thai',
+                  activeColor: Theme.of(context).colorScheme.primary,
+                ),
+                onTap: () => Navigator.pop(context, 'Thai'),
               ),
-              value: 'Thai',
-              groupValue: _selectedLanguage,
-              activeColor: Theme.of(context).colorScheme.primary,
-              onChanged: (value) {
-                Navigator.pop(context, value);
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

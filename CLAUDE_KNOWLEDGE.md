@@ -145,6 +145,32 @@ final url = '${AppConfig.baseUrl}${ApiEndpoints.login}';
 - `TimesheetStats`, `TimesheetBreakdowns`
 - Support for categories, projects, approval workflow
 
+## Flutter Version Compatibility
+
+**Current Requirements (Updated):**
+- Flutter: `>=3.35.0` (latest update)
+- Dart SDK: `>=3.9.0 <4.0.0` (supports current 3.9.2)
+
+**Installed Versions:**
+- Flutter: 3.35.3 (stable channel)
+- Dart: 3.9.2
+
+**Recent Updates:**
+- Updated from Flutter 3.10+ to 3.35+ for latest stability
+- Used `fvm use stable` to manage Flutter versions
+- Updated all dependencies to compatible versions:
+  - flutter_bloc: ^9.1.1 (was ^8.1.3)  
+  - bloc: ^9.0.0 (was ^8.1.2)
+  - get_it: ^8.2.0 (was ^7.6.4)
+  - dio: ^5.9.0 (was ^5.3.2)
+  - flutter_lints: ^6.0.0 (was ^3.0.0)
+
+**Important Notes:**
+- All deprecated member warnings fixed (activeColor → activeThumbColor, RadioGroup implementation)
+- Code generation regenerated after dependency updates
+- Project fully compatible with Flutter 3.35.3 stable
+- Always run `flutter pub outdated` before adding new dependencies
+
 ## Environment Configuration
 
 **AppConfig.dart** pattern:
@@ -310,6 +336,82 @@ class YourPage extends StatefulWidget {
 - **Null safety** compliant code
 - **Injectable** annotation for dependency injection
 
+## Migration & Compatibility Issues
+
+### Deprecated API Fixes Applied
+1. **Switch Widget**: `activeColor` → `activeThumbColor`
+2. **Radio Widget**: `RadioListTile` → `RadioGroup` wrapper pattern
+3. **DropdownButtonFormField**: `value` → `initialValue`
+
+### Breaking Changes Handled
+- BLoC 8.x → 9.x: No breaking changes for basic usage
+- get_it 7.x → 8.x: Compatible upgrade
+- flutter_lints 3.x → 6.x: New lint rules (const constructor preferences)
+
+### Flutter Version Upgrade Guide
+
+**Step-by-step Upgrade Process:**
+1. **Backup Current State**
+   ```bash
+   git add . && git commit -m "Pre-upgrade backup"
+   ```
+
+2. **Update Flutter Version**
+   ```bash
+   # Using FVM (recommended)
+   fvm use stable
+   fvm flutter --version
+   
+   # Or direct Flutter upgrade
+   flutter upgrade
+   flutter --version
+   ```
+
+3. **Update pubspec.yaml Requirements**
+   ```yaml
+   environment:
+     sdk: '>=3.9.0 <4.0.0'  # Update to match new Dart version
+     flutter: ">=3.35.0"     # Update to match new Flutter version
+   ```
+
+4. **Update Dependencies**
+   ```bash
+   # Check outdated packages
+   flutter pub outdated
+   
+   # Update major versions (be careful!)
+   flutter pub upgrade --major-versions
+   
+   # Or update specific packages
+   flutter pub add flutter_bloc:^9.1.1 bloc:^9.0.0
+   ```
+
+5. **Regenerate Code**
+   ```bash
+   flutter clean
+   flutter pub get
+   flutter packages pub run build_runner build --delete-conflicting-outputs
+   ```
+
+6. **Fix Deprecated APIs**
+   ```bash
+   flutter analyze
+   # Fix any deprecated member warnings
+   ```
+
+7. **Test Everything**
+   ```bash
+   flutter test
+   flutter run --debug
+   ```
+
+### Common Issues After Flutter Updates
+- Always run code generation after dependency updates
+- Check for deprecated widgets using `flutter analyze`
+- Update import statements if package structure changes
+- Verify device compatibility for new Flutter versions
+- Fix breaking changes in major version updates (BLoC 8→9, etc.)
+
 ## Notes for Future Claude Sessions
 - This project has been cleaned up and stabilized
 - Employee module was problematic and completely removed
@@ -317,3 +419,4 @@ class YourPage extends StatefulWidget {
 - Always use established patterns (BLoC, Repository, BaseResponse)
 - Run code generation after model changes
 - Check `injection.dart` when adding new repositories/blocs
+- **Project is now Flutter 3.35.3 compatible with all deprecated warnings fixed**

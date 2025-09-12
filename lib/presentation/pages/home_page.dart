@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
                   AppSpacing.vSpaceMD,
                   ThemedText.h4('Welcome Home!'),
                   AppSpacing.vSpaceXS,
-                  Text(
+                  const Text(
                     'Your beautiful home page built with base widgets',
                     style: AppTypography.bodyMedium, // Auto-themed!
                     textAlign: TextAlign.center,
@@ -95,7 +95,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   AppSpacing.vSpaceMD,
-                  Text(
+                  const Text(
                     'This is a Flutter app built with:',
                     style: AppTypography.bodyMedium, // Auto-themed!
                   ),

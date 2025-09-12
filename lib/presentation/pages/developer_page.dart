@@ -49,7 +49,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
                               textAlign: TextAlign.center,
                             ),
                             AppSpacing.vSpaceXS,
-                            Text(
+                            const Text(
                               'Try the BLoC State Management demo below',
                               style: AppTypography.bodyMedium,
                               textAlign: TextAlign.center,

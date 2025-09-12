@@ -120,7 +120,7 @@ class BaseDropdown<T> extends StatelessWidget {
 
   Widget _buildDropdown(BuildContext context) {
     return DropdownButtonFormField<T>(
-      value: value,
+      initialValue: value,
       items: items
           .map((item) => DropdownMenuItem<T>(
                 value: item.value,
