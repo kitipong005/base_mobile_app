@@ -479,6 +479,11 @@ emit(DataLoaded(data));
 - Check `AppConfig.flavor` is set correctly in main_*.dart files
 - Verify `AppConfig.baseUrl` returns correct URL for environment
 - Use `flutter run -t lib/main_dev.dart` instead of `--flavor`
+**When using flutter_flavorizr and .env**
+- Check `pubspec.yaml` is set asset or environment in flavor and set correctly in main_*.dart files
+- Check name files (if needed)  `flutter_launcher_icons_*.yaml` and `flutter_native_splash_*.yaml` for generate correctly in flavor name
+- ex.`flutter_launcher_icons-prod.yaml` and `flutter_native_splash-prod.yaml` for run flavor name in prod
+- Verify `.env` and `EnvConfig` returns correct URL for environment
 
 ### Debug Tools
 ```dart
@@ -570,13 +575,12 @@ static String get baseUrl {
 flutter pub run flutter_flavorizr
 ```
 flavor settings in `pubspec.yaml`:
-**Read Setting**: [text](https://pub.dev/packages/flutter_flavorizr)
+**Read Setting**: [link](https://pub.dev/packages/flutter_flavorizr)
 
 ### flutter_native_splash (Using flutter_flavorizr)
 Create `flutter_native_splash-*.yaml` Given `*` flavor name
 Ex. `flutter_native_splash-prod.yaml` for `--flavors prod`
-**Setup file**: [text](https://pub.dev/packages/flutter_native_splash)
-Run
+**Setup file**: [link](https://pub.dev/packages/flutter_native_splash)
 ```bash 
   flutter pub run flutter_native_splash:create --flavors prod
 ```
@@ -595,8 +599,7 @@ project_name/
 ### flutter_launcher_icons (Using flutter_flavorizr)
 Create `flutter_launcher_icons-*.yaml` Given `*` flavor name
 Ex. `flutter_launcher_icons-prod.yaml` for `--flavors prod`
-**Setup file**: [text](https://github.com/fluttercommunity/flutter_launcher_icons/tree/master/example/flavors)
-Run
+**Setup file**: [link](https://github.com/fluttercommunity/flutter_launcher_icons/tree/master/example/flavors)
 ```bash 
   flutter pub run --flavors prod
 ```
@@ -621,8 +624,7 @@ assets:
     env.setup(dotenv);
     return env;
   }
-```
-Run 
+``` 
 ```bash 
   flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
