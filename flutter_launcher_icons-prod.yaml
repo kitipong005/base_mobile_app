@@ -1,0 +1,16 @@
+# Run command: flutter pub run flutter_launcher_icons 
+# for flavors https://github.com/fluttercommunity/flutter_launcher_icons/tree/master/example/flavors
+# This project has the following flavors:
+# prod: flutter run --flavor prod
+flutter_launcher_icons:
+  android: true
+  # image_path_android: "configs/launcher_icons/prod/ic-android.png"
+  # adaptive_icon_foreground: "configs/launcher_icons/prod/ic-android-foreground.png"
+  # adaptive_icon_background: "configs/launcher_icons/prod/ic-android-background.png"
+  # adaptive_icon_monochrome: "configs/launcher_icons/prod/ic-android-monochrome.png"
+
+  ios: true
+  remove_alpha_ios: true
+  # image_path_ios: "configs/launcher_icons/prod/ic-ios.png"
+  # image_path_ios_dark_transparent: "configs/launcher_icons/prod/ic-ios-dark.png"
+  # image_path_ios_tinted_grayscale: "configs/launcher_icons/prod/ic-ios-tint.png"

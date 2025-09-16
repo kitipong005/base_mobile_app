@@ -53,6 +53,13 @@ Uses `get_it` + `injectable` for automatic dependency registration.
 ## Project Structure Explained
 
 ```
+configs/
+├── firebase/                # FileBase    
+│   └── prod/                # the folders are separated by name for flavor               
+├── launcher_icons/          # Images for setting launcher in 'flutter_launcher_icons-*.yaml'              
+│    └── prod/               # the folders are separated by name for flavor     
+├── splash_screen/           # Images for splash screen in 'flutter_native_splash-*.yaml'     
+│   └── prod/                # the folders are separated by name for flavor     
 lib/
 ├── core/                    # Core functionality
 │   ├── config/              # App configuration
@@ -97,6 +104,24 @@ class YourModel extends Equatable {
 
   @override
   List<Object> get props => [id, name];
+}
+```
+**OR Create Models (With json_serializable and freezed)** (if needed)
+```dart
+// lib/data/models/your_model.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'user.freezed.dart';
+part 'user.g.dart';
+@freezed
+class YourModel with _$YourModel {
+  const factory YourModel({
+    required int id,
+    required String name,
+    @JsonKey(name: 'created_at') DateTime? createdAt, //-- remote created_at convert to formJon is createAt
+  }) = _YourModel;
+
+  factory YourModel.fromJson(Map<String, dynamic> json) => _$YourModelFromJson(json);
 }
 ```
 
@@ -538,6 +563,70 @@ static String get baseUrl {
   }
 }
 ```
+
+### Flavors (Using flutter_flavorizr)
+```bash
+# run flavor
+flutter pub run flutter_flavorizr
+```
+flavor settings in `pubspec.yaml`:
+**Read Setting**: [text](https://pub.dev/packages/flutter_flavorizr)
+
+### flutter_native_splash (Using flutter_flavorizr)
+Create `flutter_native_splash-*.yaml` Given `*` flavor name
+Ex. `flutter_native_splash-prod.yaml` for `--flavors prod`
+**Setup file**: [text](https://pub.dev/packages/flutter_native_splash)
+Run
+```bash 
+  flutter pub run flutter_native_splash:create --flavors prod
+```
+```
+project_name/
+├── android/                 
+│   └── app/
+│       └── src/
+│           └── prod/        # generate forder name follow flavor name and file native splash auto 
+└── ios/                    
+    └── Runner/              
+        └── Base.lproj/      # generate LaunchScreen follow flavor name 'LaunchScreenProd.storyboard'  
+```
+**Note**: This package will generate a native splash file based on the flavor name.
+
+### flutter_launcher_icons (Using flutter_flavorizr)
+Create `flutter_launcher_icons-*.yaml` Given `*` flavor name
+Ex. `flutter_launcher_icons-prod.yaml` for `--flavors prod`
+**Setup file**: [text](https://github.com/fluttercommunity/flutter_launcher_icons/tree/master/example/flavors)
+Run
+```bash 
+  flutter pub run --flavors prod
+```
+**Note**: This package don't `pub run` but run when user run or build project with flavors.
+
+### Envlopment (Env Setup)
+Create `.env` (root project)
+```env
+API_KEY = 'https://api.example.com/api'
+```
+Env settings in `pubspec.yaml`
+```yaml
+assets:
+    - .env
+```
+ 
+### Configuration
+```dart
+  Future<EnvConfig> provideEnv() async {
+    await dotenv.load(fileName: ".env");
+    final env = EnvConfig();
+    env.setup(dotenv);
+    return env;
+  }
+```
+Run 
+```bash 
+  flutter packages pub run build_runner build --delete-conflicting-outputs
+```
+**Note**: This `EnvConfig` using injection.
 
 ## Code Standards
 

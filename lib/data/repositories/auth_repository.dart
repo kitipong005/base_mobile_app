@@ -1,26 +1,30 @@
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import '../../core/di/injection.dart';
 import '../models/auth_models.dart';
 import '../../core/constants/hive_boxes.dart';
 import '../../core/config/app_config.dart';
 import '../../core/constants/api_endpoints.dart';
+import 'package:base_mobile_app/core/config/env_config.dart';
 
 @singleton
 class AuthRepository {
   final Dio _dio;
   late final Box<AuthToken> _authBox;
   late final Box _userBox;
+  late final EnvConfig _envConfig;
 
   AuthRepository(this._dio) {
     _authBox = Hive.box<AuthToken>(HiveBoxes.auth);
     _userBox = Hive.box(HiveBoxes.userData); // Using separate box for user data
+    _envConfig = getIt<EnvConfig>();
   }
 
   Future<LoginResponse> login(LoginRequest request) async {
     try {
       final response = await _dio.post(
-        '${AppConfig.baseUrl}${ApiEndpoints.login}',
+        _envConfig.loginUrl,
         data: request.toJson(),
         options: Options(
           headers: {

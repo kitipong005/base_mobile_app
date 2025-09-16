@@ -32,6 +32,11 @@ dependencies:
   # Other utilities
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.2.2
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  
+  # Environment Variables
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -41,9 +46,68 @@ dev_dependencies:
   injectable_generator: ^2.6.2
   build_runner: ^2.4.13
   hive_generator: ^2.0.1
+  json_serializable: ^6.8.0
+  freezed: ^2.5.2
   
   # Linting
   flutter_lints: ^6.0.0
 
+  # Flavors
+  flutter_flavorizr: ^2.4.1
+
+  # Icon Generation
+  flutter_native_splash: ^2.4.6
+  flutter_launcher_icons: ^0.14.4
+
 flutter:
   uses-material-design: true
+
+  assets:
+    - .env
+
+###################################################
+# FLUTTER FLAVORIZR                               #
+# Run command: flutter pub run flutter_flavorizr  #
+###################################################
+flavorizr:
+  flavors:
+    uat:
+      app:
+        name: "Uat App"
+      android:
+        applicationId: "com.app.moonoi.uat"
+        generateDummyAssets: false
+        # firebase:
+        #   config: "configs/firebase/uat/google-services.json"
+      ios:
+        bundleId: "com.app.moonoi.uat"
+        generateDummyAssets: false
+        # firebase:
+        #   config: "configs/firebase/uat/google-services.json"
+    prod:
+      app:
+        name: "Prod App"
+
+      android:
+        applicationId: "com.app.moonoi"
+        generateDummyAssets: false
+        # firebase:
+        #   config: "configs/firebase/prod/google-services.json"
+      ios:
+        bundleId: "com.app.moonoi"
+        generateDummyAssets: false
+        # firebase:
+        #   config: "configs/firebase/prod/google-services.json"
+
+  instructions:
+    - assets:download
+    - assets:extract
+    - android:buildGradle
+    - android:flavorizrGradle
+    - ios:xcconfig
+    - ios:buildTargets
+    - ios:schema
+    - ios:plist
+    - google:firebase
+    - huawei:agconnect
+    - assets:clean

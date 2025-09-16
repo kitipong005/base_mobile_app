@@ -8,8 +8,10 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:base_mobile_app/core/config/env_config.dart' as _i328;
 import 'package:base_mobile_app/core/config/hive_config.dart' as _i671;
 import 'package:base_mobile_app/core/di/dio_module.dart' as _i893;
+import 'package:base_mobile_app/core/di/env_module.dart' as _i839;
 import 'package:base_mobile_app/data/datasources/local_datasource.dart'
     as _i408;
 import 'package:base_mobile_app/data/repositories/auth_repository.dart'
@@ -24,16 +26,21 @@ import 'package:injectable/injectable.dart' as _i526;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(
       this,
       environment,
       environmentFilter,
     );
+    final envModule = _$EnvModule();
     final dioModule = _$DioModule();
+    await gh.factoryAsync<_i328.EnvConfig>(
+      () => envModule.provideEnv(),
+      preResolve: true,
+    );
     gh.factory<_i21.ExampleBloc>(() => _i21.ExampleBloc());
     gh.singleton<_i361.Dio>(() => dioModule.dio);
     gh.singleton<_i671.HiveConfig>(() => _i671.HiveConfig());
@@ -46,5 +53,7 @@ extension GetItInjectableX on _i174.GetIt {
     return this;
   }
 }
+
+class _$EnvModule extends _i839.EnvModule {}
 
 class _$DioModule extends _i893.DioModule {}
