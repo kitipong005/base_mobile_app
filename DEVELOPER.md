@@ -479,6 +479,7 @@ emit(DataLoaded(data));
 - Check `AppConfig.flavor` is set correctly in main_*.dart files
 - Verify `AppConfig.baseUrl` returns correct URL for environment
 - Use `flutter run -t lib/main_dev.dart` instead of `--flavor`
+
 **When using flutter_flavorizr and .env**
 - Check `pubspec.yaml` is set asset or environment in flavor and set correctly in main_*.dart files
 - Check name files (if needed)  `flutter_launcher_icons_*.yaml` and `flutter_native_splash_*.yaml` for generate correctly in flavor name
